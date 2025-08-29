@@ -36,8 +36,8 @@ public class RoomRestController {
         return bytes;
     }
 
-    public record CreateReq(String roomId, String verifierBase64, String saltBase64) {}
-    public record CreateResp(String roomId, String saltBase64, String joinUrl) {}
+    public record CreateReq(String roomId, String verifierBase64) {}
+    public record CreateResp(String roomId, String joinUrl) {}
 
     @PostMapping
     public CreateResp create(@RequestBody CreateReq req, @RequestHeader("Host") String host) {
@@ -45,14 +45,13 @@ public class RoomRestController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "verifierBase64 required");
         }
         String roomId = (req.roomId() != null && !req.roomId().isBlank()) ? req.roomId() : UUID.randomUUID().toString().replace("-", "");
-        byte[] salt = (req.saltBase64() != null) ? Base64.getDecoder().decode(req.saltBase64()) : randomBytes(16);
         byte[] verifier = Base64.getDecoder().decode(req.verifierBase64());
 
-        Room room = Room.create(roomId, salt, verifier);
+        Room room = Room.create(roomId, verifier);
         store.create(room);
 
         String joinUrl = "https://" + host + "/room/" + roomId;
-        CreateResp createResp = new CreateResp(roomId, Base64.getEncoder().encodeToString(salt), joinUrl);
+        CreateResp createResp = new CreateResp(roomId, joinUrl);
         LOG.info("Room created: {}", roomId);
         return createResp;
     }
@@ -63,7 +62,6 @@ public class RoomRestController {
         if (r == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         return Map.of(
                 "roomId", r.id(),
-                "saltBase64", Base64.getEncoder().encodeToString(r.salt()),
                 "online", r.participants().size()
         );
     }

@@ -9,16 +9,16 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-public record Room(String id, byte[] salt, byte[] verifier, LocalDateTime createdAt, Duration ttl, // time to live
+public record Room(String id, byte[] verifier, LocalDateTime createdAt, Duration ttl, // time to live
                    Set<WebSocketSession> participants, int maxParticipants) {
 
-    public static Room create(String id, byte[] salt, byte[] verifier) {
-        return new Room(id, salt, verifier, LocalDateTime.now(), Duration.ofHours(1), ConcurrentHashMap.newKeySet(), 10);
+    public static Room create(String id, byte[] verifier) {
+        return new Room(id, verifier, LocalDateTime.now(), Duration.ofHours(1), ConcurrentHashMap.newKeySet(), 10);
     }
 
     @Override
     public String toString() {
-        return "Room{" + "id='" + id + '\'' + ", salt=" + Arrays.toString(salt) + ", verifier=" + Arrays.toString(verifier) +
+        return "Room{" + "id='" + id + '\'' + ", verifier=" + Arrays.toString(verifier) +
                 ", createdAt=" + createdAt + ", ttl=" + ttl + ", participants=" + participants + ", maxParticipants=" + maxParticipants +
                 '}';
     }
@@ -30,7 +30,7 @@ public record Room(String id, byte[] salt, byte[] verifier, LocalDateTime create
         }
 
         Room room = (Room) o;
-        return maxParticipants == room.maxParticipants && Objects.equals(id, room.id) && Arrays.equals(salt, room.salt) &&
+        return maxParticipants == room.maxParticipants && Objects.equals(id, room.id) &&
                 Objects.equals(ttl, room.ttl) && Arrays.equals(verifier, room.verifier) && Objects.equals(createdAt, room.createdAt) &&
                 Objects.equals(participants, room.participants);
     }
@@ -38,7 +38,6 @@ public record Room(String id, byte[] salt, byte[] verifier, LocalDateTime create
     @Override
     public int hashCode() {
         int result = Objects.hashCode(id);
-        result = 31 * result + Arrays.hashCode(salt);
         result = 31 * result + Arrays.hashCode(verifier);
         result = 31 * result + Objects.hashCode(createdAt);
         result = 31 * result + Objects.hashCode(ttl);
