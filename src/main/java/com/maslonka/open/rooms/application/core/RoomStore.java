@@ -14,12 +14,8 @@ public class RoomStore {
         rooms.put(room.id(), room);
     }
 
-    public  Room get(String id) {
+    public Room get(String id) {
         return rooms.get(id);
-    }
-
-    public void delete(String id) {
-        rooms.remove(id);
     }
 
     public Object count() {
@@ -28,5 +24,9 @@ public class RoomStore {
 
     public Object activeCount() {
         return rooms.values().stream().filter(r -> !r.participants().isEmpty()).count();
+    }
+
+    public boolean exists(String id) {
+        return rooms.containsKey(id);
     }
 }
