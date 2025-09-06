@@ -1,0 +1,22 @@
+spring:
+  main:
+    lazy-initialization: true
+
+application:
+  frontend:
+    url: http://localhost:4200
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    oauth:
+      use-basic-authentication-with-access-code-grant: true
+    display-request-duration: true
+    operationsSorter: method
+    tagsSorter: alpha
+    defaultModelsExpandDepth: -1
+    doc-expansion: none
+    csrf:
+      enabled: false
+  api-docs:
+    path: /v3/api-docs
