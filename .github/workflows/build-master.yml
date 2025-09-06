@@ -32,7 +32,7 @@ jobs:
           tags: manuelmaslonka/openrooms:latest
           platforms: linux/amd64
           build-args: |
-            JVM_OPTS=-XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:InitiatingHeapOccupancyPercent=30 -XX:G1PeriodicGCInterval=5000 -Xshare:on -Xms512m -Xmx512m
+            JVM_OPTS=-XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:InitiatingHeapOccupancyPercent=30 -XX:G1PeriodicGCInterval=5000 -Xms512m -Xmx512m
             
 
       - name: Trigger Render deployment
