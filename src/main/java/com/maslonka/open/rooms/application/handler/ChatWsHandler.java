@@ -3,6 +3,7 @@ package com.maslonka.open.rooms.application.handler;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.maslonka.open.rooms.application.core.MessageProccessor;
 import com.maslonka.open.rooms.application.core.Room;
 import com.maslonka.open.rooms.application.core.RoomStore;
 import org.springframework.lang.NonNull;
@@ -66,11 +67,7 @@ public class ChatWsHandler extends TextWebSocketHandler {
     }
 
     private void handleMsg(WebSocketSession session, JsonNode node) {
-        String roomId = (String) session.getAttributes().get(ATTR_ROOM_ID);
-        if (roomId == null) {
-            return;
-        }
-
+        String roomId = new MessageProccessor(session, node).process();
         Room room = store.get(roomId);
         if (room == null) {
             return;
