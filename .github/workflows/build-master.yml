@@ -33,3 +33,12 @@ jobs:
           platforms: linux/amd64
           build-args: |
             JVM_OPTS=-XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:InitiatingHeapOccupancyPercent=30 -XX:G1PeriodicGCInterval=5000 -Xshare:on -Xms512m -Xmx512m
+            
+
+      - name: Trigger Render deployment
+        if: github.event_name != 'pull_request'
+        run: |
+          echo "Triggering Render deployment..."
+          curl -X POST https://api.render.com/deploy/srv-d2u54rur433s73dvrt50?key=sOkY9FHbQ80
+          echo "Deployment triggered successfully"
+
