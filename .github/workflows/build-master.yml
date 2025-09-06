@@ -6,7 +6,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Java CI with Maven
+name: Build DEV
 
 on:
   push:
@@ -33,7 +33,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: Dockerfile
+          file: ./Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
           tags: manuelmaslonka/openrooms:latest
           platforms: linux/amd64
