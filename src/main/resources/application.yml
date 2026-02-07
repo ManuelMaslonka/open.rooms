@@ -1,5 +1,6 @@
 spring:
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:native}
+
   application:
     name: Open Room
